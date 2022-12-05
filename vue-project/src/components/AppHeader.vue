@@ -23,7 +23,7 @@
 
 <script>
 
-const API_URL = 'https://jurapro.bhuser.ru/api-samohod/';
+const API_URL = 'https://jurapro.bhuser.ru/api-samohod';
 
 import axios from "axios";
 import router from "@/router";
