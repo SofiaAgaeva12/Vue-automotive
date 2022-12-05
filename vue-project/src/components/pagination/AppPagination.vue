@@ -150,6 +150,7 @@ export default {
 .pagination {
   list-style-type: none;
   padding-bottom: 30px;
+  justify-content: center;
 }
 .pagination-item {
   display: inline-block;
@@ -166,7 +167,7 @@ button {
   height: 25px;
 }
 .active {
-  background-color: #4AAE9B;
+  background-color: #586865;
   color: #ffffff;
 }
 .active:hover {

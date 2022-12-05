@@ -12,7 +12,7 @@
               <div class="card-body">
                 <h1 class="card-title pricing-card-title">{{ product.price }}р.</h1>
                 <p>{{ product.description }}</p>
-                <button type="button" class="w-100 btn btn-lg btn-outline-primary" @click="addToCart(product.id)">Добавить в корзину</button>
+                <button type="button" class="w-100 btn btn-lg btn-outline-primary" v-if="authed" @click="addToCart(product.id)">Добавить в корзину</button>
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default {
       products: [],
       currentProducts: [],
       currentPage: 1,
-      perPage: 10,
+      perPage: 9,
       totalPages: 1,
       isDataLoad: false,
       message: '',
@@ -70,7 +70,7 @@ export default {
     onPageChange(page) {
       const indexPage = page * this.perPage - 1;
       this.currentPage = page;
-      this.currentProducts = this.products.slice(indexPage, indexPage + 10);
+      this.currentProducts = this.products.slice(indexPage, indexPage + 9);
     },
     addToCart(product_id) {
       axios.post(`${API_URL}/cart/` + product_id, {}, {
@@ -88,10 +88,9 @@ export default {
   },
   mounted() {
     axios.get(`${API_URL}/products`).then(response => {
-      console.log(response.data.content)
       this.products = response.data.content;
       this.totalPages = this.products.length;
-      if (this.totalPages > 10) {this.totalPages = 10}
+      if (this.totalPages > 9) {this.totalPages = 9}
       if (this.products) {this.isDataLoad = true}
         }
     )
