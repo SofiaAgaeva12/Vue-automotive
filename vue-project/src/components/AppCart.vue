@@ -16,6 +16,7 @@
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
       <div v-for="product in this.products" :key="product.id">
         <span class="success" v-if="isToCart === product.id">{{message}}</span>
+        <span class="success" v-if="isToCart === product.product_id">{{messageAddendum}}</span>
         <div class="col">
           <div class="card mb-4 rounded-3 shadow-sm">
             <div class="card-header py-3">
@@ -26,8 +27,8 @@
                 шт.</small></h1>
               <p>{{product.description}}</p>
 
-              <button type="button" class="btn btn-lg btn-info mb-3">+</button>
-              <button type="button" class="btn btn-lg btn-warning mb-3">&minus;</button>
+              <button type="button" class="btn btn-lg btn-info mb-3" @click="addToCart(product.product_id)">+</button>
+              <button type="button" class="btn btn-lg btn-warning mb-3" @click="deleteFromCart(product.id)">&minus;</button>
               <button type="button" class="btn btn-lg btn-outline-danger mb-3" @click="deleteFromCart(product.id)">Удалить из корзины</button>
             </div>
           </div>
@@ -59,7 +60,9 @@ export default {
       totalPages: 1,
       isDataLoad: false,
       message: '',
-      isToCart: 0
+      isToCart: 0,
+      messageAddendum: '',
+      sum: 0
     };
   },
   components: {
@@ -82,9 +85,24 @@ export default {
           'authorization': `Bearer ${localStorage.getItem('token')}`
         }
       }).then(response => {
+        this.isToCart = id;
         this.message = response.data.content.message;
             console.log(response)
       }
+      )
+    },
+    addToCart(id) {
+      axios.post(`${API_URL}/cart/` + id, {}, {
+        headers: {
+          'authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }).then(response => {
+        this.isToCart = id;
+        setTimeout((()=> this.isToCart = 0), 1000)
+            console.log(response)
+            this.messageAddendum = response.data.content.message
+            setTimeout((()=> this.messageAddendum = 0), 1000)
+          }
       )
     }
   },
@@ -99,6 +117,7 @@ export default {
           this.totalPages = this.products.length;
           if (this.totalPages > 10) {this.totalPages = 10}
           if (this.products) {this.isDataLoad = true}
+          // this.sum += response.data.content.reduce(function(p,c){return p+c.price;},'');
         }
     )
   },
