@@ -81,7 +81,7 @@ export default {
             this.isToCart = product_id;
             setTimeout((()=> this.isToCart = 0), 1000)
             console.log(response)
-            this.message = response.data.data.message
+            this.message = response.data.content.message
           }
       )
     }

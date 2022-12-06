@@ -46,7 +46,7 @@ export default {
   methods: {
     async login() {
       await axios.post(`${API_URL}/login`, this.model).then((res) => {
-
+        localStorage.setItem('token', res.data.content.user_token);
         this.per = res.data;
         router.push('/');
         console.log(res)
